@@ -16,5 +16,6 @@ class AddressBook
         index+= 1
     end
     entries.insert(index, Entry.new(name, phone_number,email))
+    p @entries
   end
 end
