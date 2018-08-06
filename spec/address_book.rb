@@ -3,6 +3,12 @@ require_relative '../models/address_book'
 RSpec.describe AddressBook do
   let(:book) { AddressBook.new }
 
+  def check_entry(entry, expected_name, expected_number, expected_email)
+    expect(entry.name).to eq(expected_name)
+    expect(entry.phone_number).to eq(expected_number)
+    expect(entry.email).to eq(expected_email)
+  end
+
   describe "attributes" do
     it "responds to entries" do
       expect(book).to respond_to(:entries)
@@ -35,13 +41,9 @@ RSpec.describe AddressBook do
   end
 
   describe "#import_from_csv" do
-    def check_entry(entry, expected_name, expected_number, expected_email)
-      expect(entry.name).to eq(expected_name)
-      expect(entry.phone_number).to eq(expected_number)
-      expect(entry.email).to eq(expected_email)
-    end
 
     it "imports the correct number of entries" do 
+      expect(book).to respond_to(:entries)
       book.import_from_csv("entries.csv")
       book_size = book.entries.size
 
@@ -49,6 +51,7 @@ RSpec.describe AddressBook do
     end
 
     it "imports the 1st entry" do 
+      expect(book).to respond_to(:entries)
       book.import_from_csv("entries.csv")
       entry_one = book.entries[0]
 
