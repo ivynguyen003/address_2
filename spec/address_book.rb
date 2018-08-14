@@ -9,6 +9,17 @@ RSpec.describe AddressBook do
     expect(entry.email).to eq(expected_email)
   end
 
+  context "#detonate" do 
+    it "delete all entries" do 
+      book.add_entry('Ivy','000.111.2222','ivy.awesome@possom.com')
+      book.add_entry('Ivy','000.111.2222','ivy.awesome@possom.com')
+      book.add_entry('Ivy','000.111.2222','ivy.awesome@possom.com')
+    
+      book.detonate
+      expect(book.entries.size).to eq 0
+    end
+  end
+
   describe "attributes" do
     it "responds to entries" do
       expect(book).to respond_to(:entries)
@@ -162,6 +173,56 @@ RSpec.describe AddressBook do
     it "seaches AddressBook for Billy" do
       book.import_from_csv("entries.csv")
       entry = book.binary_search("Billy")
+      expect(entry).to be_nil
+    end
+  end
+
+  describe "#iterative_search" do
+    it "searches AddressBook for a non-existent entry" do
+      book.import_from_csv("entries.csv")
+      entry = book.iterative_search("Dan")
+      expect(entry).to be_nil
+    end
+
+    it "searches AddressBook for Bill" do
+      book.import_from_csv("entries.csv")
+      entry = book.iterative_search("Bill")
+      expect(entry).to be_a Entry
+      check_entry(entry, "Bill","555-555-4854", "bill@blocmail.com")
+    end  
+
+    it "searches AddressBook for Bob" do 
+      book.import_from_csv("entries.csv")
+      entry= book.iterative_search("Bob")
+      expect(entry).to be_a Entry
+      check_entry(entry, "Bob", "555-555-5415", "bob@blocmail.com")
+    end
+
+    it "searches AddressBook for Joe" do
+      book.import_from_csv("entries.csv")
+      entry = book.iterative_search("Joe")
+      expect(entry).to be_a Entry
+      check_entry(entry, "Joe", "555-555-3660", "joe@blocmail.com")
+
+    end
+
+    it "searches AddressBook for Sally" do
+      book.import_from_csv("entries.csv")
+      entry = book.iterative_search("Sally")
+      expect(entry).to be_a Entry
+      check_entry(entry, "Sally", "555-555-4646", "sally@blocmail.com")
+    end
+
+    it "searches AddressBook for Sussie" do
+      book.import_from_csv("entries.csv")
+      entry = book.iterative_search("Sussie")
+      expect(entry).to be_a Entry
+      check_entry(entry, "Sussie", "555-555-2036", "sussie@blocmail.com")
+    end
+
+    it "seaches AddressBook for Billy" do
+      book.import_from_csv("entries.csv")
+      entry = book.iterative_search("Billy")
       expect(entry).to be_nil
     end
   end
